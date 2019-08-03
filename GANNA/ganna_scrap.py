@@ -1,55 +1,55 @@
-import requests
+import requests,webbrowser
+from pprint import pprint
 from bs4 import BeautifulSoup
-import pprint
-import webbrowser
-url="https://gaana.com/topcharts"
-req_=requests.get(url)
-# print(req_)
-soup=BeautifulSoup(req_.text,"html.parser")
-main_div=soup.find('ul',class_="content-container artworkload clearfix a-list")
+from pprint import pprint
+u="https://gaana.com/"
+url=requests.get(u)
+soup=BeautifulSoup(url.text,"html.parser")
+chart=soup.find("div",{"class":"carousel","id":"topchartsCarousel"})
+top_one=chart.find("h2",{"id":"themechange","class":"themechange"})
+link=top_one.find("a").get("href")
+add_link='https://gaana.com%26/#39;+(link)+''
+new_url=requests.get(add_link)
+new_soup=BeautifulSoup(new_url.text,"html.parser")
+top_chart=new_soup.find("ul",class_="content-container artworkload clearfix a-list")
+all_div=top_chart.find_all("div",class_="hover-events-parent")
+all_top_gaana=[]
+def top_list_gaana(div):
+	count=1
+	for i in div:
+		com=i.find("a").get("href")
+		all_top_gaana.append("https://gaana.com%26quot%3B+com%29/
+		cut=com[19:]
+		print(count,cut)
+		count+=1
+	return(all_top_gaana)
+
+top_list_gaana(all_div)
 
 
-get_name=main_div.find_all('div',class_="arwtork_label")
-# print(get_)
-count=0
-for i in get_name:
-	a_=i.find('a').get_text()
-	count+=1
-	print(count,a_)
-get_=main_div.find_all('div',class_="hover-events-parent")
-list_=[]
-for i in get_:
-	link=(i.find('a').get('href'))
-	# print(link)
-	com_link=("https://gaana.com" + link)
-	list_.append(str(com_link))
-# pprint.pprint(list)
-user=int(input('enter >'))
-print(list_[user-1])
-req_2=requests.get(list_[user-1])
-print(req_2)
-soup=BeautifulSoup(req_2.text,"html.parser")
-# print(soup)......................................................................###
-main_div=soup.find("div",class_="innercontainer")
-# time=main_div.find_all("li",class_="s_duration")
+def one_gaana(gaana):
+	append_song=[]
+	user=int(input("aap konsa gaana suna chahte ho\n"))
+	o_open=gaana[user-1]
+	# print(o_open)
+	user_get=requests.get(o_open)
+	b_soup=BeautifulSoup(user_get.text,"html.parser")
+	data_div=b_soup.find("div",class_="s_c")
+	ul_id=data_div.findAll("div",class_="playlist_thumb_det") 
+	num=1
+	append_song=[]
+	for i in ul_id:
+		name=i.find("a").get_text()
+		print(num,name)
+		num+=1
+		f_data=i.find("a").get("href")
+		append_song.append(f_data)
+	return(append_song)
+playlist=one_gaana(all_top_gaana)
 
-div = main_div.find_all("div",class_="playlist_thumb_det")
-# print(div)
-
-## scrape all hindi song according the user input##..........................##
-Url_list=[]
-count=1
-for i in div:
-	url=(i.find('a').get('href'))
-	# print(url)
-
-	Url_list.append(url)
-	name = (i.find('a').text)
-	print(count,name)
-	count+=1
-user1=int(input("enter the number of song:"))
-link = Url_list[user1-1]
-# print(link)
-webbrowser.open_new_tab(link)
-
-
+def play_music(alist):
+	user=int(input("enter one "))
+	play=webbrowser.open(alist[user-1])
+	print(play)
+	
+play_music(playlist)
