@@ -17,5 +17,5 @@ Requests is an Apache2 Licensed HTTP library, written in Python. Requests will a
 
     pip3 install request
 
-### nstruction to run the code on your terminal
+### Instruction to run the code on your terminal
 If you want to run the code in Linux, open your terminal and type- python3 ganna_scrap.py
